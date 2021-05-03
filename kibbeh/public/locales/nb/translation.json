@@ -20,7 +20,10 @@
   "header": {
     "_comment": "Main Header UI Internationalization Strings",
     "title": "DogeHouse",
-    "mutedTitle": "Dempet | DogeHouse"
+    "mutedTitle": "Dempet | DogeHouse",
+    "deafenedTitle": "Deafened | DogeHouse",
+    "dashboard": "Dashboard",
+    "connectionTaken": "Connection Taken"
   },
   "footer": {
     "_comment": "Main Footer UI Internationalization Strings",
@@ -40,7 +43,8 @@
     "home": {
       "createRoom": "Lag et rom",
       "refresh": "Last inn på nytt",
-      "editRoom": "Edit Room"
+      "editRoom": "Edit Room",
+      "desktopAlert": "Download the DogeHouse desktop app today!"
     },
     "inviteList": {
       "roomGone": "Rommet finnes ikke lengre, gå tilbake",
@@ -53,12 +57,13 @@
       "featureText_1": "Mørkt tema",
       "featureText_2": "Åpne registreringer",
       "featureText_3": "Støtte på tvers av plattformer",
-      "featureText_4": "Åpen kildekode",
+      "featureText_4": "Åpene kildekoden",
       "featureText_5": "Tekstchat",
       "featureText_6": "Drevet av Doge",
       "loginGithub": "Logg inn med GitHub",
       "loginTwitter": "Logg inn med Twitter",
-      "createTestUser": "Opprett en test-bruker"
+      "createTestUser": "Opprett en test-bruker",
+      "loginDiscord": "Login with Discord"
     },
     "myProfile": {
       "logout": "Logg ut",
@@ -66,7 +71,8 @@
       "voiceSettings": "Gå til taleinnstillinger",
       "soundSettings": "Gå til lydinnstillinger",
       "deleteAccount": "Slett konto",
-      "overlaySettings": "Gå til overleggsinnstillinger"
+      "overlaySettings": "Gå til overleggsinnstillinger",
+      "couldNotFindUser": "Beklager, vi kunne ikke finne denne brukeren.."
     },
     "notFound": {
       "whoopsError": "Oi sann! Denne siden ble tapt i samtalen.",
@@ -81,7 +87,7 @@
       "allowAllConfirm": "Er du sikker? Dette vil tillate alle {{count}} spørrende brukere til å snakke"
     },
     "searchUser": { "search": "søk..." },
-    "soundEffectSettings": { "header": "Lyder" },
+    "soundEffectSettings": { "header": "Lyder", "title": "Sound Settings" },
     "viewUser": {
       "editProfile": "Rediger profil",
       "followsYou": "Følger deg",
@@ -91,7 +97,9 @@
       "followingHim": "Følger",
       "copyProfileUrl": "Kopiér profil URL",
       "urlCopied": "URL kopiert til utklippstavlen",
-      "unfollow": "Slutt å følge"
+      "unfollow": "Slutt å følge",
+      "about": "Om bruker",
+      "bot": "Bot"
     },
     "voiceSettings": {
       "header": "Taleinnstillinger",
@@ -103,6 +111,14 @@
     "overlaySettings": {
       "input": { "errorMsg": "Ugyldig tittel", "label": "Angi tittel" },
       "header": "Innstillinger for overlegg"
+    },
+    "download": {
+      "starting": "Starter nedlastning...",
+      "failed": "Kunne ikke gjøre automatisk nedlastning, prøv igjen senere",
+      "visit_gh": "Besøk Github lanseringer",
+      "prompt": "Klikk på knappen nedenfor, for å starte nedlastningen",
+      "download_now": "Last ned nå",
+      "download_for": "Nedlastning for %platform% (%ext%)"
     }
   },
   "components": {
@@ -127,7 +143,10 @@
       "settings": "Innstillinger",
       "speaker": "Taler",
       "listener": "Lytter",
-      "chat": "Chat"
+      "chat": "Chat",
+      "toggleDeafMicBtn": "Toggle Deafen",
+      "deafen": "Deafen",
+      "undeafen": "Undeafen"
     },
     "deviceNotSupported": {
       "notSupported": "Enheten din støttes foreløpig ikke. Du kan opprette ett",
@@ -148,7 +167,8 @@
       "listening": "Lytter",
       "toggleMuteKeybind": "Veksle demping av hurtigtast",
       "togglePushToTalkKeybind": "Veksle trykk for å snakke hurtigtast",
-      "toggleOverlayKeybind": "Overlay hurtigtast"
+      "toggleOverlayKeybind": "Overlay hurtigtast",
+      "toggleDeafKeybind": "Toggle deafen keybind"
     },
     "userVolumeSlider": {
       "noAudioMessage": "Ingen lydmottaker av en eller annen grunn"
@@ -165,7 +185,8 @@
         "roomName": "Romnavn",
         "roomDescription": "Rombeskrivelse",
         "descriptionError": "Maksimal lengde er 500 tegn",
-        "nameError": "Må være mellom 2 og 60 tegn"
+        "nameError": "Må være mellom 2 og 60 tegn",
+        "subtitle": "Fill the following fields to start a new room"
       },
       "invitedToJoinRoomModal": {
         "newRoomCreated": "Nytt rom er opprettet",
@@ -183,7 +204,8 @@
         "usernameError": "Lengden må være mellom 4 og 15 tegn og kan kun inneholde alfanumerisk/understrek",
         "usernameLabel": "Brukernavn",
         "bioError": "Maksimal lengde er 160 tegn",
-        "bioLabel": "Bio"
+        "bioLabel": "Bio",
+        "bannerUrlLabel": "Twitter banner URL"
       },
       "profileModal": {
         "blockUserConfirm": "Er du sikker på at du vil blokkere brukeren fra å bli med i alle nye rom du lager?",
@@ -196,7 +218,8 @@
         "banFromRoom": "Utesteng fra rommet",
         "goBackToListener": "Gå tilbake til lytter",
         "deleteMessage": "Slett denne meldingen",
-        "makeRoomCreator": "Opprett rom-administrator"
+        "makeRoomCreator": "Opprett rom-administrator",
+        "unBanFromChat": "Unban from Chat"
       },
       "roomSettingsModal": {
         "requirePermission": "Krev tillatelse for å snakke",
@@ -204,6 +227,34 @@
         "makePrivate": "Gjør rommet privat",
         "renamePublic": "Set public room name",
         "renamePrivate": "Set private room name"
+      }
+    },
+    "followingOnline": {
+      "people": "Mennesker",
+      "online": "Pålogget",
+      "noOnline": "Du har ingen venner pålogget",
+      "showMore": "Vis flere"
+    },
+    "upcomingRoomsCard": {
+      "upcomingRooms": "Kommende rom",
+      "exploreMoreRooms": "Utforsk flere rom"
+    },
+    "search": {
+      "placeholder": "Søk etter rom, brukere eller kategorier",
+      "placeholderShort": "Search"
+    },
+    "settingsDropdown": {
+      "profile": "Profil",
+      "language": "Språk",
+      "reportABug": "Rapporter en feil",
+      "useOldVersion": "Bruk den gamle versjonen",
+      "logOut": {
+        "button": "Logg ut",
+        "modalSubtitle": "Er du sikker på at du vil logge ut?"
+      },
+      "debugAudio": {
+        "debugAudio": "Debug Audio",
+        "stopDebugger": "Stop Debugger"
       }
     }
   },
@@ -221,6 +272,11 @@
         "roomName": "Romnavn",
         "minLength": "Minimum lengde er 2 tegn",
         "roomDescription": "Beskrivelse"
+      },
+      "tommorow": "I MORGEN",
+      "today": "I DAG",
+      "deleteModal": {
+        "areYouSure": "Er du sikker på at du vil slette det planlagte rommet?"
       }
     },
     "roomChat": {
@@ -247,6 +303,7 @@
       "approachingGalaxy": "Nærmer seg galaksen",
       "galacticDoge": "Galakse-doge",
       "spottedLife": "Planet med liv oppdaget"
-    }
+    },
+    "feed": { "yourFeed": "Din Feed" }
   }
 }

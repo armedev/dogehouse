@@ -32,7 +32,7 @@ export const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
       {!data || "error" in data ? (
         <InfoText>something went wrong</InfoText>
       ) : (
-        <div className={`flex-col w-full`}>
+        <div className={`flex flex-col w-full`}>
           <label className={`flex items-center my-1`} htmlFor="auto-speaker">
             <input
               checked={!data.autoSpeaker}
@@ -41,7 +41,7 @@ export const RoomSettingsModal: React.FC<RoomSettingsModalProps> = ({
                 updater(["joinRoomAndGetInfo", roomId!], (d) =>
                   !d ? d : { ...d, autoSpeaker }
                 );
-                conn.mutation.setAutoSpeaker(autoSpeaker);
+                conn.mutation.roomUpdate({ autoSpeaker });
               }}
               id="auto-speaker"
               type="checkbox"

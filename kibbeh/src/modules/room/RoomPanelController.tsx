@@ -1,21 +1,34 @@
+import { JoinRoomAndGetInfoResponse } from "@dogehouse/kebab";
 import React, { useState } from "react";
 import { useCurrentRoomIdStore } from "../../global-stores/useCurrentRoomIdStore";
 import { useConn } from "../../shared-hooks/useConn";
+import { useCurrentRoomInfo } from "../../shared-hooks/useCurrentRoomInfo";
+import { useScreenType } from "../../shared-hooks/useScreenType";
+import { useTypeSafeTranslation } from "../../shared-hooks/useTypeSafeTranslation";
 import { CenterLoader } from "../../ui/CenterLoader";
 import { RoomHeader } from "../../ui/RoomHeader";
 import { CreateRoomModal } from "../dashboard/CreateRoomModal";
+import { HeaderController } from "../display/HeaderController";
 import { MiddlePanel } from "../layouts/GridPanels";
+import { useRoomChatStore } from "./chat/useRoomChatStore";
 import { RoomPanelIconBarController } from "./RoomPanelIconBarController";
 import { RoomUsersPanel } from "./RoomUsersPanel";
 import { useGetRoomByQueryParam } from "./useGetRoomByQueryParam";
 import { UserPreviewModal } from "./UserPreviewModal";
-import { HeaderController } from "../display/HeaderController";
-import { useRoomChatStore } from "./chat/useRoomChatStore";
-import { useScreenType } from "../../shared-hooks/useScreenType";
 
-interface RoomPanelControllerProps {}
+interface RoomPanelControllerProps {
+  setRoomData?: React.Dispatch<
+    React.SetStateAction<JoinRoomAndGetInfoResponse | undefined>
+  >;
+  showMobileEditModal: boolean;
+  setShowMobileEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export const RoomPanelController: React.FC<RoomPanelControllerProps> = ({}) => {
+export const RoomPanelController: React.FC<RoomPanelControllerProps> = ({
+  setRoomData,
+  showMobileEditModal,
+  setShowMobileEditModal,
+}) => {
   const conn = useConn();
   const { currentRoomId } = useCurrentRoomIdStore();
   const [showEditModal, setShowEditModal] = useState(false);
@@ -38,12 +51,16 @@ export const RoomPanelController: React.FC<RoomPanelControllerProps> = ({}) => {
   }
 
   const roomCreator = data.users.find((x: any) => x.id === data.room.creatorId);
+  if (setRoomData) setRoomData(data);
 
   return (
     <>
-      {showEditModal ? (
+      {showEditModal || showMobileEditModal ? (
         <CreateRoomModal
-          onRequestClose={() => setShowEditModal(false)}
+          onRequestClose={() => {
+            setShowEditModal(false);
+            setShowMobileEditModal(false);
+          }}
           edit
           data={{
             name: data.room.name,
@@ -55,16 +72,20 @@ export const RoomPanelController: React.FC<RoomPanelControllerProps> = ({}) => {
       <HeaderController embed={{}} title={data.room.name} />
       <MiddlePanel
         stickyChildren={
-          <RoomHeader
-            onTitleClick={
-              data.room.creatorId === conn.user.id
-                ? () => setShowEditModal(true)
-                : undefined
-            }
-            title={data.room.name}
-            description={data.room.description || ""}
-            names={roomCreator ? [roomCreator.username] : []}
-          />
+          screenType !== "fullscreen" ? (
+            <RoomHeader
+              onTitleClick={
+                data.room.creatorId === conn.user.id
+                  ? () => setShowEditModal(true)
+                  : undefined
+              }
+              title={data.room.name}
+              description={data.room.description || ""}
+              names={roomCreator ? [roomCreator.username] : []}
+            />
+          ) : (
+            ""
+          )
         }
       >
         <UserPreviewModal {...data} />

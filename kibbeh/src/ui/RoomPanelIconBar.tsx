@@ -1,7 +1,9 @@
 import React from "react";
 import {
-  SolidCompass,
-  SolidFriends,
+  SolidChatBubble,
+  SolidDeafened,
+  SolidDeafenedOff,
+  SolidFriendsAdd,
   SolidMicrophone,
   SolidMicrophoneOff,
   SolidSettings,
@@ -16,6 +18,10 @@ interface RoomPanelIconBarProps {
     isMuted: boolean;
     onMute: () => void;
   };
+  deaf?: {
+    isDeaf: boolean;
+    onDeaf: () => void;
+  };
   onInvitePeopleToRoom?: () => void;
   onRoomSettings?: () => void;
   onLeaveRoom(): void;
@@ -24,6 +30,7 @@ interface RoomPanelIconBarProps {
 
 export const RoomPanelIconBar: React.FC<RoomPanelIconBarProps> = ({
   mute,
+  deaf,
   onInvitePeopleToRoom,
   onRoomSettings,
   onLeaveRoom,
@@ -32,59 +39,93 @@ export const RoomPanelIconBar: React.FC<RoomPanelIconBarProps> = ({
   const { t } = useTypeSafeTranslation();
   const screenType = useScreenType();
   return (
-    <div className="justify-between bg-primary-700 rounded-b-8 py-3 px-4 w-full">
-      <div>
+    <div className="flex flex-wrap justify-center bg-primary-700 rounded-b-8 py-3 px-4 w-full sm:justify-between">
+      <div className="flex my-1 justify-between w-full sm:my-0 sm:w-auto">
         {mute ? (
           <BoxedIcon
             transition
-            className="mr-2"
+            hover={!mute.isMuted}
+            className={`mx-1 w-11 h-6.5 ${
+              !mute.isMuted && !deaf?.isDeaf
+                ? `bg-accent hover:bg-accent-hover text-button`
+                : ``
+            }`}
             color="800"
+            title={t("components.bottomVoiceControl.toggleMuteMicBtn")}
             onClick={() => mute.onMute()}
+            data-testid="mute"
           >
-            {mute.isMuted ? <SolidMicrophoneOff /> : <SolidMicrophone />}
+            {mute.isMuted || deaf?.isDeaf ? (
+              <SolidMicrophoneOff width="20" height="20" />
+            ) : (
+              <SolidMicrophone width="20" height="20" />
+            )}
+          </BoxedIcon>
+        ) : null}
+        {deaf ? (
+          <BoxedIcon
+            transition
+            hover={deaf.isDeaf}
+            className={`mx-1 h-6.5 w-6.5 ${
+              deaf.isDeaf ? `bg-accent hover:bg-accent-hover text-button` : ``
+            }`}
+            color="800"
+            title={t("components.bottomVoiceControl.toggleDeafMicBtn")}
+            onClick={() => deaf.onDeaf()}
+            data-testid="deafen"
+          >
+            {deaf.isDeaf ? (
+              <SolidDeafenedOff width="20" height="20" />
+            ) : (
+              <SolidDeafened width="20" height="20" />
+            )}
           </BoxedIcon>
         ) : null}
         {onInvitePeopleToRoom ? (
           <BoxedIcon
             transition
-            className="mr-2"
+            className="mx-1 h-6.5 w-6.5"
             color="800"
+            title={t("components.bottomVoiceControl.inviteUsersToRoomBtn")}
             onClick={onInvitePeopleToRoom}
+            data-testid="invite-friends"
           >
-            {/* @todo swap out right icon */}
-            <SolidFriends />
+            <SolidFriendsAdd height="20" />
           </BoxedIcon>
         ) : null}
         {screenType === "1-cols" || screenType === "fullscreen" ? (
-          // @todo put chat icon
           <BoxedIcon
             transition
-            className="mr-2"
+            className="mx-1 h-6.5 w-6.5"
             color="800"
             onClick={onToggleChat}
+            data-testid="chat"
           >
-            <SolidCompass />
+            <SolidChatBubble />
           </BoxedIcon>
         ) : null}
         {onRoomSettings ? (
           <BoxedIcon
             transition
-            className="mr-2"
+            className="mx-1 h-6.5 w-6.5"
             color="800"
+            title={t("components.bottomVoiceControl.settings")}
             onClick={onRoomSettings}
+            data-testid="room-settings"
           >
-            <SolidSettings />
+            <SolidSettings width="20" height="20" />
           </BoxedIcon>
         ) : null}
       </div>
 
       <Button
         transition
-        className={`ml-2`}
+        className={`my-1 mx-1 w-full text-base sm:my-0 sm:mx-0 sm:w-15`}
         color="secondary-800"
         onClick={() => {
           onLeaveRoom();
         }}
+        data-testid="leave-room"
       >
         {t("components.bottomVoiceControl.leave")}
       </Button>

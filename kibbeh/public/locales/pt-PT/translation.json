@@ -20,7 +20,10 @@
   "header": {
     "_comment": "Main Header UI Internationalization Strings",
     "title": "DogeHouse",
-    "mutedTitle": "Silenciado | DogeHouse"
+    "mutedTitle": "Silenciado | DogeHouse",
+    "deafenedTitle": "Deafened | DogeHouse",
+    "dashboard": "Dashboard",
+    "connectionTaken": "Connection Taken"
   },
   "footer": {
     "_comment": "Main Footer UI Internationalization Strings",
@@ -38,9 +41,10 @@
     },
     "followList": { "followHim": "seguir", "followingHim": "a seguir" },
     "home": {
-      "createRoom": "Criar Sala",
+      "createRoom": "Criar sala",
       "refresh": "Atualizar",
-      "editRoom": "Edit Room"
+      "editRoom": "Editar sala",
+      "desktopAlert": "Download the DogeHouse desktop app today!"
     },
     "inviteList": {
       "roomGone": "A sala não existe, voltar atrás",
@@ -58,7 +62,8 @@
       "featureText_6": "Powered by Doge",
       "loginGithub": "Entrar com GitHub",
       "loginTwitter": "Entrar com Twitter",
-      "createTestUser": "Criar utilizador de teste"
+      "createTestUser": "Criar utilizador de teste",
+      "loginDiscord": "Login with Discord"
     },
     "myProfile": {
       "logout": "Sair",
@@ -66,7 +71,8 @@
       "voiceSettings": "Definições de voz",
       "soundSettings": "Definições de som",
       "deleteAccount": "Apagar conta",
-      "overlaySettings": "Ir para definições de Overlay"
+      "overlaySettings": "Ir para definições de Overlay",
+      "couldNotFindUser": "Desculpa, não conseguimos encontrar esse utilizador"
     },
     "notFound": {
       "whoopsError": "Ups! Esta página perdeu-se na conversa.",
@@ -81,7 +87,7 @@
       "allowAllConfirm": "De certeza? Isto permitirá todos os {{count}} utilizadores a pedir, falar"
     },
     "searchUser": { "search": "Procurar..." },
-    "soundEffectSettings": { "header": "Sons" },
+    "soundEffectSettings": { "header": "Sons", "title": "Sound Settings" },
     "viewUser": {
       "editProfile": "Editar perfil",
       "followsYou": "Seguem-te",
@@ -91,7 +97,9 @@
       "followingHim": "Seguindo",
       "copyProfileUrl": "copiar URL do perfil",
       "urlCopied": "URL copiado",
-      "unfollow": "Deixar de Seguir"
+      "unfollow": "Deixar de Seguir",
+      "about": "About",
+      "bot": "Bot"
     },
     "voiceSettings": {
       "header": "Definições de voz",
@@ -106,6 +114,14 @@
         "label": "Introduza o título da aplicação"
       },
       "header": "Definições de Overlay"
+    },
+    "download": {
+      "starting": "Starting download...",
+      "failed": "Could not auto-download, please try again later",
+      "visit_gh": "Visit Github Releases",
+      "prompt": "Click on the button below to start download",
+      "download_now": "Download Now",
+      "download_for": "Download for %platform% (%ext%)"
     }
   },
   "components": {
@@ -130,7 +146,10 @@
       "settings": "Definições",
       "speaker": "Orador",
       "listener": "Ouvinte",
-      "chat": "Chat"
+      "chat": "Chat",
+      "toggleDeafMicBtn": "Toggle Deafen",
+      "deafen": "Deafen",
+      "undeafen": "Undeafen"
     },
     "micPermissionBanner": {
       "permissionDenied": "Sem permissão para aceder ao microfone (poderás ter que de ir às configurações do teu navegador e atualizar a página)",
@@ -144,7 +163,8 @@
         "roomName": "nome da sala",
         "roomDescription": "descrição da sala",
         "descriptionError": "máximo 500 caracteres",
-        "nameError": "deverá ter entre 2 e 60 caracteres"
+        "nameError": "deverá ter entre 2 e 60 caracteres",
+        "subtitle": "Preenche os campos seguintes para iniciar uma nova sala"
       },
       "invitedToJoinRoomModal": {
         "newRoomCreated": "Nova sala criada",
@@ -162,7 +182,8 @@
         "usernameError": "Deverá ter entre 4 e 15 caracteres alfanuméricos e com letra minúscula",
         "usernameLabel": "Nome de utilizador",
         "bioError": "Tamanho máximo de 160 caracteres",
-        "bioLabel": "Biografia"
+        "bioLabel": "Biografia",
+        "bannerUrlLabel": "Twitter banner URL"
       },
       "profileModal": {
         "blockUserConfirm": "Pretendes bloquear este utlizador de se juntar às salas que criares?",
@@ -175,7 +196,8 @@
         "banFromRoom": "Banir da sala",
         "goBackToListener": "voltar a ouvinte",
         "deleteMessage": "Apagar mensagem",
-        "makeRoomCreator": "Tornar administrador da sala"
+        "makeRoomCreator": "Tornar administrador da sala",
+        "unBanFromChat": "Unban from Chat"
       },
       "roomSettingsModal": {
         "requirePermission": "Pedir permissão para falar",
@@ -194,7 +216,8 @@
       "listening": "a ouvir",
       "toggleMuteKeybind": "teclas de atalho para silenciar",
       "togglePushToTalkKeybind": "teclas de atalho para ativar o premir-para-falar",
-      "toggleOverlayKeybind": "teclas de atalho para mostrar/esconder o Overlay"
+      "toggleOverlayKeybind": "teclas de atalho para mostrar/esconder o Overlay",
+      "toggleDeafKeybind": "Toggle deafen keybind"
     },
     "wsKilled": {
       "description": "O WebSocket foi quebrado pelo servidor. Isto geralmente acontece quando abres o site noutro separador.",
@@ -208,6 +231,34 @@
     "inviteButton": {
       "invited": "convidado",
       "inviteToRoom": "convidar para a sala"
+    },
+    "followingOnline": {
+      "people": "Pessoas",
+      "online": "ONLINE",
+      "noOnline": "Neste momento tens 0 amigos online",
+      "showMore": "Mostrar mais"
+    },
+    "upcomingRoomsCard": {
+      "upcomingRooms": "Próximas salas",
+      "exploreMoreRooms": "Explorar mais salas"
+    },
+    "search": {
+      "placeholder": "Pesquisar salas, utilizadores ou categorias",
+      "placeholderShort": "Search"
+    },
+    "settingsDropdown": {
+      "profile": "Perfil",
+      "language": "Linguagem",
+      "reportABug": "Reportar um erro",
+      "useOldVersion": "Usar versão antiga",
+      "logOut": {
+        "button": "Sair",
+        "modalSubtitle": "De certeza que pretendes sair?"
+      },
+      "debugAudio": {
+        "debugAudio": "Debug Audio",
+        "stopDebugger": "Stop Debugger"
+      }
     }
   },
   "modules": {
@@ -223,6 +274,11 @@
         "roomName": "nome da sala",
         "minLength": "mínimo de 2 caracteres",
         "roomDescription": "descrição da sala"
+      },
+      "tommorow": "TOMMOROW",
+      "today": "TODAY",
+      "deleteModal": {
+        "areYouSure": "Are you sure you want to delete this scheduled room?"
       }
     },
     "roomChat": {
@@ -249,6 +305,7 @@
       "approachingGalaxy": "A aproximar-se da galáxia",
       "galacticDoge": "Doge galático",
       "spottedLife": "Encontrado planeta com vida"
-    }
+    },
+    "feed": { "yourFeed": "O teu Feed" }
   }
 }

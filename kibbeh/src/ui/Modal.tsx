@@ -67,11 +67,12 @@ export const Modal: React.FC<
       style={customStyles[variant]}
       {...props}
     >
-      <div className={`flex-col w-full`}>
-        <div className={`justify-end absolute right-3 top-3`}>
+      <div className={`flex flex-col w-full`}>
+        <div className={`flex justify-end absolute right-3 top-3`}>
           <button
             className={`p-1 text-primary-100`}
             onClick={(e) => props?.onRequestClose?.(e)}
+            data-testid="close-modal"
           >
             <SolidPlus className={`transform rotate-45`} />
           </button>

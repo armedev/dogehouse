@@ -1,9 +1,9 @@
 defmodule Kousa.Beef.UserTest do
   # allow tests to run in parallel
   use ExUnit.Case, async: true
-  use Kousa.Support.EctoSandbox
+  use KousaTest.Support.EctoSandbox
 
-  alias Kousa.Support.Factory
+  alias KousaTest.Support.Factory
   alias Beef.Follows
   alias Beef.Schemas.Room
   alias Beef.Schemas.User
@@ -15,6 +15,7 @@ defmodule Kousa.Beef.UserTest do
     @gh_input %{
       "id" => 12345,
       "avatar_url" => "https://foo.bar/baz.jpg",
+      "banner_url" => "https://foo.bar/baz.jpg",
       "name" => "tester",
       "bio" => "test",
       "github_access_token" => "askldjlqwjldq"
@@ -42,6 +43,13 @@ defmodule Kousa.Beef.UserTest do
     # autogenerate UUIDs.
     test "by user_id", %{user: user = %{id: id}} do
       assert [^id] = Users.find_by_github_ids([user.githubId])
+    end
+
+    test "by searching username", %{user: %{id: id, username: username}} do
+      assert [%{id: ^id}] = Users.search_username("@" <> username)
+      assert [%{id: ^id}] = Users.search_username(username)
+      assert [%{id: ^id}] = Users.search_username(String.slice(username, 0..2))
+      assert [] = Users.search_username("akljdsjoqwdijo12")
     end
   end
 

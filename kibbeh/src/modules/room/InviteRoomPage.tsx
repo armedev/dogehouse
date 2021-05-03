@@ -19,7 +19,7 @@ import { DefaultDesktopLayout } from "../layouts/DefaultDesktopLayout";
 import { MiddlePanel } from "../layouts/GridPanels";
 import { useGetRoomByQueryParam } from "./useGetRoomByQueryParam";
 import { HeaderController } from "../display/HeaderController";
-import { FeedHeader } from "../../ui/Feed";
+import { FeedHeader } from "../../ui/FeedHeader";
 
 interface InviteRoomPageProps {}
 
@@ -53,9 +53,6 @@ const Page = ({
   onLoadMore: (o: number) => void;
 }) => {
   const conn = useWrappedConn();
-  const { currentRoomId } = useCurrentRoomIdStore();
-  const { push } = useRouter();
-  const prefetch = useTypeSafePrefetch();
   const { t } = useTypeSafeTranslation();
   const { isLoading, data } = useTypeSafeQuery(
     ["getInviteList", cursor],
@@ -79,15 +76,15 @@ const Page = ({
     <>
       <HeaderController embed={{}} title="Invite" />
       {data.users.map((user) => (
-        <div key={user.id} className="items-center mb-6">
-          <div>
+        <div key={user.id} className="flex items-center mb-6">
+          <div className="flex">
             <SingleUser size="md" src={user.avatarUrl} />
           </div>
-          <div className="px-4 flex-1">
+          <div className="flex px-4 flex-1">
             <ApiPreloadLink route="profile" data={{ username: user.username }}>
-              <div className="flex-col">
-                <div className="text-primary-100">{user.displayName}</div>
-                <div className="text-primary-200">@{user.username}</div>
+              <div className="flex flex-col">
+                <div className="flex text-primary-100">{user.displayName}</div>
+                <div className="flex text-primary-200">@{user.username}</div>
               </div>
             </ApiPreloadLink>
           </div>
@@ -149,32 +146,30 @@ export const InviteRoomPage: PageComponent<InviteRoomPageProps> = ({}) => {
   return (
     <DefaultDesktopLayout>
       <MiddlePanel>
-        {room.isPrivate ? null : (
-          <>
-            {!navigator.share ? (
-              <div className={`text-primary-100 font-bold text-2xl mb-2`}>
-                {t("pages.inviteList.shareRoomLink")}
-              </div>
-            ) : null}
-            <div className={`mb-8 flex`}>
-              <Input readOnly ref={inputRef} value={url} className="mr-2" />
-              <Button
-                size="small"
-                onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({ url });
-                  } else {
-                    inputRef.current?.select();
-                    document.execCommand("copy");
-                    setCopied(true);
-                  }
-                }}
-              >
-                {buttonText}
-              </Button>
+        <>
+          {!navigator.share ? (
+            <div className={`flex text-primary-100 font-bold text-2xl mb-2`}>
+              {t("pages.inviteList.shareRoomLink")}
             </div>
-          </>
-        )}
+          ) : null}
+          <div data-testid="container" className={`mb-8 flex`}>
+            <Input readOnly ref={inputRef} value={url} className="mr-2" />
+            <Button
+              size="small"
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({ url });
+                } else {
+                  inputRef.current?.select();
+                  document.execCommand("copy");
+                  setCopied(true);
+                }
+              }}
+            >
+              {buttonText}
+            </Button>
+          </div>
+        </>
         {cursors.map((cursor, i) => (
           <Page
             key={cursor}

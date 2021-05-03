@@ -20,7 +20,10 @@
   "header": {
     "_comment": "Main Header UI Internationalization Strings",
     "title": "DogeHouse",
-    "mutedTitle": "음소거 | DogeHouse"
+    "mutedTitle": "음소거 | DogeHouse",
+    "deafenedTitle": "Deafened | DogeHouse",
+    "dashboard": "Dashboard",
+    "connectionTaken": "Connection Taken"
   },
   "footer": {
     "_comment": "Main Footer UI Internationalization Strings",
@@ -39,8 +42,9 @@
     "followList": { "followHim": "follow", "followingHim": "following" },
     "home": {
       "createRoom": "방 만들기",
-      "refresh": "Refresh",
-      "editRoom": "Edit Room"
+      "refresh": "새로고침",
+      "editRoom": "방 수정하기",
+      "desktopAlert": "Download the DogeHouse desktop app today!"
     },
     "inviteList": {
       "roomGone": "채팅방이 삭제됨. 이전 페이지로 돌아가기.",
@@ -58,7 +62,8 @@
       "featureText_6": "멍멍이의 힘으로 구동됨 ",
       "loginGithub": "깃허브로 로그인",
       "loginTwitter": "트위터로 로그인",
-      "createTestUser": "테스트 계정 만들기"
+      "createTestUser": "테스트 계정 만들기",
+      "loginDiscord": "Login with Discord"
     },
     "myProfile": {
       "logout": "로그아웃",
@@ -66,7 +71,8 @@
       "voiceSettings": "음성 설정 들어가기",
       "soundSettings": "소리 설정 들어가기",
       "deleteAccount": "계정 삭제",
-      "overlaySettings": "go to overlay settings"
+      "overlaySettings": "go to overlay settings",
+      "couldNotFindUser": "Sorry, we could not find that user"
     },
     "notFound": {
       "whoopsError": "아이고! 페이지가 사라졌습니다",
@@ -81,7 +87,7 @@
       "allowAllConfirm": "Are you sure? This will allow all {{count}} requesting users to speak"
     },
     "searchUser": { "search": "검색..." },
-    "soundEffectSettings": { "header": "소리" },
+    "soundEffectSettings": { "header": "소리", "title": "Sound Settings" },
     "viewUser": {
       "editProfile": "프로필 변경",
       "followsYou": "나를 팔로우하는 사람들",
@@ -91,7 +97,9 @@
       "followingHim": "following",
       "copyProfileUrl": "프로필 URL 복사",
       "urlCopied": "URL이 클립보드에 복사 되었습니다.",
-      "unfollow": "팔로우 취소"
+      "unfollow": "팔로우 취소",
+      "about": "About",
+      "bot": "Bot"
     },
     "voiceSettings": {
       "header": "음성 설정",
@@ -101,8 +109,19 @@
       "volume": "음량:"
     },
     "overlaySettings": {
-      "input": { "errorMsg": "Invalid app title", "label": "Enter App Title" },
-      "header": "Overlay Settings"
+      "input": {
+        "errorMsg": "유효하지 않은 앱 타이틀 입니다.",
+        "label": "앱 타이틀 입력하기"
+      },
+      "header": "오버레이 설정"
+    },
+    "download": {
+      "starting": "Starting download...",
+      "failed": "Could not auto-download, please try again later",
+      "visit_gh": "Visit Github Releases",
+      "prompt": "Click on the button below to start download",
+      "download_now": "Download Now",
+      "download_for": "Download for %platform% (%ext%)"
     }
   },
   "components": {
@@ -127,7 +146,10 @@
       "settings": "설정",
       "speaker": "스피커",
       "listener": "청취자",
-      "chat": "Chat"
+      "chat": "Chat",
+      "toggleDeafMicBtn": "Toggle Deafen",
+      "deafen": "Deafen",
+      "undeafen": "Undeafen"
     },
     "deviceNotSupported": {
       "notSupported": "현재 기기는 지원되지 않습니다, ",
@@ -145,7 +167,8 @@
       "listening": "듣는중",
       "toggleMuteKeybind": "음소거 키 토글",
       "togglePushToTalkKeybind": "푸시 투 토크 키 토글",
-      "toggleOverlayKeybind": "toggle overlay keybind"
+      "toggleOverlayKeybind": "toggle overlay keybind",
+      "toggleDeafKeybind": "Toggle deafen keybind"
     },
     "userVolumeSlider": {
       "noAudioMessage": "오디오 컨수머를 찾을수 없었습니다"
@@ -162,7 +185,8 @@
         "roomName": "채팅방 이름",
         "roomDescription": "채팅방 설명",
         "descriptionError": "최대 길이 500자",
-        "nameError": "2자에서 60자 사이로 설정해주세요"
+        "nameError": "2자에서 60자 사이로 설정해주세요",
+        "subtitle": "Fill the following fields to start a new room"
       },
       "invitedToJoinRoomModal": {
         "newRoomCreated": "새로운 채팅방이 생성 되었습니다",
@@ -180,7 +204,8 @@
         "usernameError": "길이는 4 ~ 15 자 이내 여야하며 문자, 숫자 또는 밑줄 만 허용됩니다.",
         "usernameLabel": "사용자 이름",
         "bioError": "최대 길이는 160 자입니다.",
-        "bioLabel": "개인 프로필"
+        "bioLabel": "개인 프로필",
+        "bannerUrlLabel": "Twitter banner URL"
       },
       "profileModal": {
         "blockUserConfirm": "이 사람을 블랙리스트에 추가 하시겠습니까? (다시는 당신이 생성 ​​한 채팅방에 참여할 수 없습니다).",
@@ -193,7 +218,8 @@
         "banFromRoom": "채팅방 에서 차단",
         "goBackToListener": "청취자로 돌아가기",
         "deleteMessage": "이 메세지 삭제",
-        "makeRoomCreator": "make room admin"
+        "makeRoomCreator": "make room admin",
+        "unBanFromChat": "Unban from Chat"
       },
       "roomSettingsModal": {
         "requirePermission": "발언권이 필요합니다",
@@ -201,6 +227,34 @@
         "makePrivate": "채팅방 비공개화",
         "renamePublic": "Set public room name",
         "renamePrivate": "Set private room name"
+      }
+    },
+    "followingOnline": {
+      "people": "People",
+      "online": "ONLINE",
+      "noOnline": "You have 0 friends online right now",
+      "showMore": "Show more"
+    },
+    "upcomingRoomsCard": {
+      "upcomingRooms": "Upcoming rooms",
+      "exploreMoreRooms": "Explore More Rooms"
+    },
+    "search": {
+      "placeholder": "Search for rooms, users or categories",
+      "placeholderShort": "Search"
+    },
+    "settingsDropdown": {
+      "profile": "Profile",
+      "language": "Language",
+      "reportABug": "Report A Bug",
+      "useOldVersion": "Use Old Version",
+      "logOut": {
+        "button": "Log out",
+        "modalSubtitle": "Are you sure you want to logout?"
+      },
+      "debugAudio": {
+        "debugAudio": "Debug Audio",
+        "stopDebugger": "Stop Debugger"
       }
     }
   },
@@ -217,8 +271,11 @@
         "needsFuture": "시간을 미래로 설정하세요",
         "roomName": "채팅방 이름",
         "minLength": "최소 2자",
-        "roomDescription": "Description"
-      }
+        "roomDescription": "설명"
+      },
+      "tommorow": "내일",
+      "today": "오늘",
+      "deleteModal": { "areYouSure": "정말 예약 된 방을 제거하시겠습니까?" }
     },
     "roomChat": {
       "title": "문자 채팅",
@@ -244,6 +301,7 @@
       "approachingGalaxy": "은하계에 근접하는 중..",
       "galacticDoge": "Galactic Doge",
       "spottedLife": "생명체가 있는 새로운 행성에 도착"
-    }
+    },
+    "feed": { "yourFeed": "Your Feed" }
   }
 }

@@ -1,9 +1,9 @@
 defmodule Kousa.Beef.RoomsTest do
   # allow tests to run in parallel
   use ExUnit.Case, async: true
-  use Kousa.Support.EctoSandbox
+  use KousaTest.Support.EctoSandbox
 
-  alias Kousa.Support.Factory
+  alias KousaTest.Support.Factory
   alias Beef.Schemas.User
   alias Beef.Schemas.Room
   alias Beef.Rooms
@@ -41,6 +41,16 @@ defmodule Kousa.Beef.RoomsTest do
       # # askedToSpeak
       # Beef.Data.RoomPermission.upsert(%{ userId: user.id, roomId: room.id }, %{ isMod: false, isSpeaker: false, askedToSpeak: true })
       # assert Rooms.get_room_status(user.id) == {:askedToSpeak, room}
+    end
+
+    test "search_name" do
+      room = Factory.create(Room)
+      id = room.id
+      assert [%{id: ^id}] = Rooms.search_name(room.name)
+      assert [%{id: ^id}] = Rooms.search_name(String.slice(room.name, 0..2))
+      assert [] = Rooms.search_name("akljdsjoqwdijo12")
+      room2 = Factory.create(Room, isPrivate: true)
+      assert [] = Rooms.search_name(room2.name)
     end
 
     test "can_join_room" do
@@ -216,7 +226,8 @@ defmodule Kousa.Beef.RoomsTest do
           %{
             id: creator.id,
             displayName: creator.displayName,
-            numFollowers: creator.numFollowers
+            numFollowers: creator.numFollowers,
+            avatarUrl: creator.avatarUrl
           }
         ]
       )
@@ -232,7 +243,8 @@ defmodule Kousa.Beef.RoomsTest do
           %{
             id: creator2.id,
             displayName: creator2.displayName,
-            numFollowers: creator2.numFollowers
+            numFollowers: creator2.numFollowers,
+            avatarUrl: creator2.avatarUrl
           }
         ]
       )
@@ -254,6 +266,7 @@ defmodule Kousa.Beef.RoomsTest do
 
     test "create" do
       %User{
+        avatarUrl: avatarUrl,
         displayName: displayName,
         numFollowers: numFollowers,
         id: id
@@ -270,6 +283,7 @@ defmodule Kousa.Beef.RoomsTest do
       assert %Room{
                peoplePreviewList: [
                  %User.Preview{
+                   avatarUrl: ^avatarUrl,
                    displayName: ^displayName,
                    numFollowers: ^numFollowers,
                    id: ^id

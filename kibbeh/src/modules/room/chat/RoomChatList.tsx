@@ -16,7 +16,7 @@ interface ChatListProps {
 
 export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
   const { setData } = useContext(UserPreviewModalContext);
-  const messages = useRoomChatStore((s) => s.messages);
+  const { messages, toggleFrozen } = useRoomChatStore();
   const me = useConn().user;
   const { isMod: iAmMod, isCreator: iAmCreator } = useCurrentRoomInfo();
   const bottomRef = useRef<null | HTMLDivElement>(null);
@@ -24,6 +24,8 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
   const {
     isRoomChatScrolledToTop,
     setIsRoomChatScrolledToTop,
+    message,
+    setMessage,
   } = useRoomChatStore();
   const { t } = useTypeSafeTranslation();
 
@@ -43,7 +45,7 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
 
   return (
     <div
-      className={`px-5 flex-1 overflow-y-auto chat-message-container scrollbar-thin scrollbar-thumb-primary-700`}
+      className={`flex px-5 flex-1 overflow-y-auto chat-message-container scrollbar-thin scrollbar-thumb-primary-700`}
       ref={chatListRef}
       onScroll={() => {
         if (!chatListRef.current) return;
@@ -56,6 +58,8 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
           useRoomChatMentionStore.getState().resetIAmMentioned();
         }
       }}
+      onMouseEnter={toggleFrozen}
+      onMouseLeave={toggleFrozen}
     >
       <div
         className="w-full h-full mt-auto"
@@ -92,17 +96,31 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
                 >
                   {/* Whisper label */}
                   {messages[index].isWhisper ? (
-                    <p className="mb-0 text-sm text-primary-300 px-1 w-16 mt-1 text-center">
+                    <div className="flex mb-1 text-sm text-primary-300 px-1 w-16 mt-1 text-center">
                       {t("modules.roomChat.whisper")}
-                    </p>
+                    </div>
                   ) : null}
                   <div className={`flex items-center px-1`}>
                     <div
-                      className={`block break-words max-w-full items-start flex-1 text-primary-100`}
+                      className={`block break-words overflow-hidden max-w-full items-start flex-1 text-primary-100`}
                       key={messages[index].id}
                     >
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          // Auto mention on shift click
+                          if (e.shiftKey && messages[index].userId !== me.id) {
+                            setMessage(
+                              message +
+                                (message.endsWith(" ") ? "" : " ") +
+                                "@" +
+                                messages[index].username +
+                                " "
+                            );
+                            document.getElementById("room-chat-input")?.focus();
+
+                            return;
+                          }
+
                           setData({
                             userId: messages[index].userId,
                             message:
@@ -115,7 +133,8 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
                                 : undefined,
                           });
                         }}
-                        className={`inline hover:underline font-bold focus:outline-none font-mono`}
+                        // DO NOT CHANGE FONT ON THIS BUTTON, IT CRASHES FIREFOX
+                        className={`inline hover:underline font-bold focus:outline-none`}
                         style={{
                           textDecorationColor: messages[index].color,
                           color: messages[index].color,
@@ -126,13 +145,12 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
                       <span className={`inline mr-1`}>: </span>
                       <div className={`inline mr-1 space-x-1`}>
                         {messages[index].deleted ? (
-                          <span className="inline text-primary-300">
-                            [message{" "}
+                          <span className="inline text-primary-300 italic">
+                            message{" "}
                             {messages[index].deleterId ===
                             messages[index].userId
                               ? "retracted"
                               : "deleted"}
-                            ]
                           </span>
                         ) : (
                           messages[index].tokens.map(({ t: token, v }, i) => {
@@ -144,13 +162,14 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
                                   >{`${v} `}</React.Fragment>
                                 );
                               case "emote":
-                                return emoteMap[v] ? (
-                                  <img
-                                    key={i}
-                                    className="inline"
-                                    alt={`:${v}:`}
-                                    src={emoteMap[v.toLowerCase()]}
-                                  />
+                                return emoteMap[v.toLowerCase()] ? (
+                                  <React.Fragment key={i}>
+                                    <img
+                                      className="inline"
+                                      alt={`:${v}:`}
+                                      src={emoteMap[v.toLowerCase()]}
+                                    />{" "}
+                                  </React.Fragment>
                                 ) : (
                                   ":" + v + ":"
                                 );
@@ -162,14 +181,16 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
                                       onClick={() => {
                                         setData({ userId: v });
                                       }}
-                                      className={`inline hover:underline flex-1 focus:outline-none ${
+                                      className={`inline flex-1 focus:outline-none ${
                                         v === me?.username
-                                          ? "bg-accent text-white px-1 rounded text-md"
+                                          ? "bg-accent text-button px-1 rounded text-md"
                                           : ""
                                       }`}
                                       style={{
                                         textDecorationColor:
-                                          messages[index].color,
+                                          v === me?.username
+                                            ? ""
+                                            : messages[index].color,
                                         color:
                                           v === me?.username
                                             ? ""
@@ -222,7 +243,7 @@ export const RoomChatList: React.FC<ChatListProps> = ({ room }) => {
           }
         )}
         {/* {messages.length === 0 ? (
-        <div>{t("modules.roomChat.welcomeMessage")}</div>
+        <div className="flex">{t("modules.roomChat.welcomeMessage")}</div>
       ) : null} */}
       </div>
       <div ref={bottomRef} />

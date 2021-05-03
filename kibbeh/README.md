@@ -13,15 +13,14 @@
 </p>
 <br/>
 
+
 # What is this folder?
 
-This folder is called kibbeh ([/ˈkɪbi/](https://en.wikipedia.org/wiki/Kibbeh)), it is currently used for our Next.js frontend rewrite and new design.
+This folder is called kibbeh ([/ˈkɪbi/](https://en.wikipedia.org/wiki/Kibbeh)), it is currently used for our Next.js frontend.
 
-It's live on 👉 [next.dogehouse.tv](https://next.dogehouse.tv)
+It's live on 👉 [dogehouse.tv](https://dogehouse.tv)
 
 # How can I contribute?
-
-First of all, this project is currently in _very_ early stages of development, therefore these instructions may not be up to date.
 
 **We're using [Yarn](https://yarnpkg.com/) for this project, do not use npm for the following commands**
 
@@ -44,7 +43,6 @@ yarn staging
 ```
 
 > If for some reason the above commands dont work and leave you with a `@dogehouse/kebab` module not found error, just copy the entire `dogehouse/kebab` directory over to `dogehouse/node_modules/@dogehouse/kebab`
-
 
 > **NOTE:** OAuth login is kinda broken as of right now *(if running using `yarn staging`)* so to get around it follow the steps below:
 > - Enter your credentials in OAuth

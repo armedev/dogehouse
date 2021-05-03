@@ -1,15 +1,17 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SolidFriends } from "../../icons";
 import { isServer } from "../../lib/isServer";
 import { ApiPreloadLink } from "../../shared-components/ApiPreloadLink";
 import { useConn } from "../../shared-hooks/useConn";
+import { useIntersectionObserver } from "../../shared-hooks/useIntersectionObserver";
 import { useTypeSafeMutation } from "../../shared-hooks/useTypeSafeMutation";
 import { useTypeSafeQuery } from "../../shared-hooks/useTypeSafeQuery";
 import { useTypeSafeTranslation } from "../../shared-hooks/useTypeSafeTranslation";
 import { useTypeSafeUpdateQuery } from "../../shared-hooks/useTypeSafeUpdateQuery";
 import { Button } from "../../ui/Button";
 import { CenterLoader } from "../../ui/CenterLoader";
+import { Spinner } from "../../ui/Spinner";
 import { SingleUser } from "../../ui/UserAvatar";
 import { MiddlePanel } from "../layouts/GridPanels";
 
@@ -30,7 +32,8 @@ const Page = ({
   onLoadMore: (o: number) => void;
 }) => {
   const conn = useConn();
-
+  const ref = useRef<HTMLDivElement | null>(null);
+  const entry = useIntersectionObserver(ref, {});
   const {
     mutateAsync,
     isLoading: followLoading,
@@ -50,40 +53,42 @@ const Page = ({
     vars
   );
 
+  useEffect(() => {
+    const shouldLoadMore = !!entry?.isIntersecting;
+
+    if (shouldLoadMore && data?.nextCursor) {
+      onLoadMore(data.nextCursor!);
+    }
+  }, [data?.nextCursor, entry?.isIntersecting, onLoadMore]);
+
   if (isLoading) {
     return <CenterLoader />;
   }
 
-  if (!data) {
-    return null;
+  if (!data || data.users.length === 0) {
+    const styles = "text-primary-200 text-center";
+    if (isFollowing) return <div className={styles}>Not following anyone</div>;
+    else return <div className={styles}>No followers</div>;
   }
-
-  // if (isOnlyPage && data.rooms.length === 0) {
-  //   return (
-  //     <Button variant="small" onClick={() => refetch()}>
-  //       {t("pages.home.refresh")}
-  //     </Button>
-  //   );
-  // }
 
   return (
     <>
       {data.users.map((user) => (
-        <div key={user.id} className="items-center mb-6">
-          <div>
+        <div key={user.id} className="flex items-center mb-6">
+          <div className="flex">
             <SingleUser size="md" src={user.avatarUrl} />
           </div>
-          <div className="px-4 flex-1">
+          <div className="flex px-4 flex-1">
             <ApiPreloadLink route="profile" data={{ username: user.username }}>
-              <div className="flex-col w-full">
-                <p className="block max-w-md text-primary-100 truncate w-full">
+              <div className="flex flex-col w-full">
+                <div className="block max-w-md text-primary-100 truncate w-full">
                   {user.displayName}
-                </p>
-                <div className="text-primary-200">@{user.username}</div>
+                </div>
+                <div className="flex text-primary-200">@{user.username}</div>
               </div>
             </ApiPreloadLink>
           </div>
-          <div className="block">
+          <div className="flex">
             {conn.user.username !== user.username && (
               <Button
                 loading={followLoading && variables?.[0] === user.id}
@@ -120,18 +125,11 @@ const Page = ({
           </div>
         </div>
       ))}
-      {isLastPage && data.nextCursor ? (
-        <div className={`flex justify-center py-5`}>
-          <Button
-            size="small"
-            onClick={() => {
-              onLoadMore(data.nextCursor!);
-            }}
-          >
-            {t("common.loadMore")}
-          </Button>
+      {isLastPage && data.nextCursor && (
+        <div ref={ref} className={`flex justify-center py-5`}>
+          <Spinner />
         </div>
-      ) : null}
+      )}
     </>
   );
 };
@@ -144,17 +142,19 @@ export const FollowingController: React.FC<FollowingControllerProps> = ({}) => {
 
   return (
     <MiddlePanel>
-      {cursors.map((cursor, i) => (
-        <Page
-          username={username}
-          isFollowing={isFollowing}
-          key={cursor}
-          cursor={cursor}
-          isOnlyPage={cursors.length === 1}
-          onLoadMore={(c) => setCursors([...cursors, c])}
-          isLastPage={i === cursors.length - 1}
-        />
-      ))}
+      <div className="flex flex-col mb-6">
+        {cursors.map((cursor, i) => (
+          <Page
+            username={username}
+            isFollowing={isFollowing}
+            key={cursor}
+            cursor={cursor}
+            isOnlyPage={cursors.length === 1}
+            onLoadMore={(c) => setCursors([...cursors, c])}
+            isLastPage={i === cursors.length - 1}
+          />
+        ))}
+      </div>
     </MiddlePanel>
   );
 };

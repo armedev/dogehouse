@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import "../styles/globals.css";
-import "../styles/add-to-calendar-button.css";
+import "../styles/electron-header.css";
+import "../styles/banner-button.css";
+import "../styles/date-time-picker.css";
 import { AppProps } from "next/app";
 import { QueryClientProvider } from "react-query";
 import { WebSocketProvider } from "../modules/ws/WebSocketProvider";
@@ -21,6 +23,7 @@ import { InvitedToJoinRoomModal } from "../shared-components/InvitedToJoinRoomMo
 import { ConfirmModal } from "../shared-components/ConfirmModal";
 import isElectron from "is-electron";
 import Head from "next/head";
+import { useHostStore } from "../global-stores/useHostStore";
 
 if (!isServer) {
   init_i18n();
@@ -41,10 +44,28 @@ function App({ Component, pageProps }: AppProps) {
     if (isElectron()) {
       const ipcRenderer = window.require("electron").ipcRenderer;
       ipcRenderer.send("@dogehouse/loaded", "kibbeh");
+      ipcRenderer.send("@app/hostPlatform");
+      ipcRenderer.on(
+        "@app/hostPlatform",
+        (
+          event: any,
+          platform: { isLinux: boolean; isWin: boolean; isMac: boolean }
+        ) => {
+          useHostStore.getState().setData(platform);
+        }
+      );
+      document.documentElement.style.setProperty(
+        "--screen-height-reduction",
+        "30px"
+      );
     }
   }, []);
 
-  if (isServer && (Component as PageComponent<unknown>).ws) {
+  if (
+    isServer &&
+    !Component.getInitialProps &&
+    (Component as PageComponent<unknown>).ws
+  ) {
     return null;
   }
 
@@ -55,10 +76,14 @@ function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <MainWsHandlerProvider>
           <Head>
+            <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+            <link rel="manifest" href="/manifest.json" />
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1, user-scalable=no, user-scalable=0"
             />
+            <link rel="apple-touch-icon" href="/img/doge.png"></link>
+            <link rel="apple-touch-startup-image" href="img/doge512.png" />
           </Head>
           <Component {...pageProps} />
           <SoundEffectPlayer />
