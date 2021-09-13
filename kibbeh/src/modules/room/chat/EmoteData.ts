@@ -1558,6 +1558,9 @@ export const customEmojis = [
   },
 ];
 
+type EmoteList = typeof customEmojis;
+export type EmoteKeys = EmoteList[number]["name"];
+
 export const emoteMap: Record<string, string> = {};
 
 export type CustomEmote = {

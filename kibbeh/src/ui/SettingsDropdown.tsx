@@ -1,16 +1,18 @@
 import { User } from "@dogehouse/kebab";
+import isElectron from "is-electron";
+import { useRouter } from "next/router";
 import React, { ReactNode, useState } from "react";
 import { useDebugAudioStore } from "../global-stores/useDebugAudio";
 import {
+  DeveloperIcon,
   OutlineGlobe,
   SolidBug,
   SolidCaretRight,
-  SolidMicrophone,
-  SolidTime,
   SolidUser,
   SolidVolume,
 } from "../icons";
 import SvgSolidDiscord from "../icons/SolidDiscord";
+import SvgSolidDownload from "../icons/SolidDownload";
 import { ApiPreloadLink } from "../shared-components/ApiPreloadLink";
 import { useTypeSafeTranslation } from "../shared-hooks/useTypeSafeTranslation";
 import { BaseOverlay } from "../ui/BaseOverlay";
@@ -25,6 +27,8 @@ export const SettingsDropdown: React.FC<{
   const [currentOverlay, setCurrentOverlay] = useState<ReactNode>(null);
   const { t } = useTypeSafeTranslation();
   const { debugAudio, setDebugAudio } = useDebugAudioStore();
+
+  const { push } = useRouter();
 
   return (
     <div
@@ -85,6 +89,23 @@ export const SettingsDropdown: React.FC<{
             transition
             onClick={() => setDebugAudio(!debugAudio)}
           />
+
+          {!isElectron() ? (
+            <SettingsIcon
+              onClick={() => push("/download")}
+              icon={<SvgSolidDownload />}
+              label={t("components.settingsDropdown.downloadApp")}
+              transition
+            />
+          ) : null}
+
+          <SettingsIcon
+            onClick={() => push("/developer/bots")}
+            icon={<DeveloperIcon />}
+            label={t("components.settingsDropdown.developer")}
+            transition
+          />
+
           <a
             href="https://discord.gg/wCbKBZF9cV"
             target="_blank"
